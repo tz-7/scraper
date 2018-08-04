@@ -1,0 +1,39 @@
+{
+    "name":        "tz7/scraper",
+    "license":     "MIT",
+    "type":        "library",
+    "description": "Web Scraper Bot Fun",
+    "authors": {
+        "name": "Adam Torok",
+        "email": "adamus.tork@gmail.com",
+        "role": "Developer"
+    },
+    "bin": ["bin/phantomjs-runner"],
+    "autoload":    {
+        "psr-4": {
+            "Tz7\\WebScraper\\": "src/"
+        }
+    },
+    "autoload-dev":    {
+        "psr-4": {
+            "Tz7\\WebScraper\\Test\\": "tests/"
+        }
+    },
+    "require":     {
+        "php":                ">=5.5",
+        "facebook/webdriver": "^1.4",
+        "symfony/options-resolver": "*",
+        "symfony/expression-language": "*",
+        "psr/log": "~1.0",
+        "doctrine/cache": "~1.4",
+        "monolog/monolog": "^1.22",
+        "league/tactician": "^1.0",
+        "symfony/dom-crawler": "^3.4",
+        "kriswallsmith/buzz": "^0.15",
+        "symfony/css-selector": "^3.4",
+        "guzzlehttp/psr7": "^1.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    }
+}

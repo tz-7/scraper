@@ -1,0 +1,123 @@
+<?php
+
+namespace Tz7\WebScraper\ExpressionLanguage;
+
+
+use GuzzleHttp\Psr7\Uri;
+use GuzzleHttp\Psr7\UriResolver;
+use Symfony\Component\ExpressionLanguage\ExpressionFunction;
+use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
+use Tz7\WebScraper\WebDriver\WebDriverAdapterInterface;
+
+
+class ExpressionLanguageProvider implements ExpressionFunctionProviderInterface
+{
+    public function getFunctions()
+    {
+        return [
+            ExpressionFunction::fromPhp('preg_replace'),
+            ExpressionFunction::fromPhp('strip_tags'),
+            ExpressionFunction::fromPhp('trim'),
+            ExpressionFunction::fromPhp('mt_rand'),
+            ExpressionFunction::fromPhp('urlencode'),
+            ExpressionFunction::fromPhp('http_build_query'),
+            new ExpressionFunction(
+                'preg_match',
+                function ($pattern, $subject)
+                {
+                    return sprintf('preg_match(%s, %s)', $pattern, $subject);
+                },
+                function (array $values, $pattern, $subject)
+                {
+                    preg_match($pattern, $subject, $matches);
+                    array_shift($matches);
+
+                    return $matches;
+                }
+            ),
+            new ExpressionFunction(
+                'alphaNumeric',
+                function ($str)
+                {
+                    return sprintf('(is_string(%1$s) ? alphaNumeric(%1$s) : %1$s)', $str);
+                },
+                function (array $values, $str)
+                {
+                    return is_string($str) ? $this->alphaNumeric($str, '') : $str;
+                }
+            ),
+            new ExpressionFunction(
+                'slugify',
+                function ($str)
+                {
+                    return sprintf('(is_string(%1$s) ? slugify(%1$s) : %1$s)', $str);
+                },
+                function (array $values, $str)
+                {
+                    return is_string($str) ? $this->slugify($str, ' ') : $str;
+                }
+            ),
+            new ExpressionFunction(
+                'absoluteUrl',
+                function (WebDriverAdapterInterface $driver, $uri)
+                {
+                    return sprintf('absoluteUrl(driver, %s)', $uri);
+                },
+                function (array $values, WebDriverAdapterInterface $driver, $uri)
+                {
+                    return $this->absoluteUrl($driver, $uri);
+                }
+            )
+        ];
+    }
+
+    /**
+     * @param string $string
+     * @param string $replace
+     *
+     * @return string
+     */
+    public function alphaNumeric($string, $replace = '')
+    {
+        return preg_replace('/[^\w!\s-]/', $replace, $string);
+    }
+
+    /**
+     * Normalize by Google
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    public function normalize($string)
+    {
+        return preg_replace('/[\x80-\xFF]+/', '', \Normalizer::normalize($string, \Normalizer::FORM_D));
+    }
+
+    /**
+     * Slugify by Google
+     *
+     * @param string $string
+     * @param string $delimeter
+     *
+     * @return string
+     */
+    public function slugify($string, $delimeter = "_")
+    {
+        return trim(strtolower(preg_replace('/[^\w\d]+/', $delimeter, $this->normalize($string))), $delimeter);
+    }
+
+    /**
+     * @param WebDriverAdapterInterface $driver
+     * @param string                    $uri
+     *
+     * @return string
+     */
+    public function absoluteUrl(WebDriverAdapterInterface $driver, $uri)
+    {
+        return (string) UriResolver::resolve(
+            new Uri($driver->getCurrentURL()),
+            new Uri($uri)
+        );
+    }
+}

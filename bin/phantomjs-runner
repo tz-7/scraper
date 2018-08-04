@@ -1,0 +1,22 @@
+#!/usr/bin/env php
+<?php
+
+chdir(__DIR__);
+
+if (!isset($argv[1]) || !in_array($argv[1], ['start', 'stop']))
+{
+    printf('Usage: phantomjs-runner start|stop [address:port [/path/to/bin]]' . "\n");
+
+    exit;
+}
+
+use Tz7\WebScraper\Browser\PhantomJsRunner;
+
+include '../vendor/autoload.php';
+
+$runner = new PhantomJsRunner(
+    isset($argv[2]) ? $argv[2] : '127.0.0.1:8910',
+    isset($argv[3]) ? $argv[3] : 'phantomjs'
+);
+
+$runner->{$argv[1]}();
