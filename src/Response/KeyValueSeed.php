@@ -3,7 +3,7 @@
 namespace Tz7\WebScraper\Response;
 
 
-class KeyValueSeed extends ScalarSeed implements SeedCanBePlantedInterface
+class KeyValueSeed extends Seed implements SeedCanBePlantedInterface
 {
     /** @var string */
     protected $key;
@@ -25,6 +25,14 @@ class KeyValueSeed extends ScalarSeed implements SeedCanBePlantedInterface
     public function getKey()
     {
         return $this->key;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 
     /**
