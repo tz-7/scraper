@@ -7,6 +7,7 @@ use League\Tactician\Middleware;
 use Tz7\WebScraper\Command\Command;
 use Tz7\WebScraper\Response\ArraySeed;
 use Tz7\WebScraper\Response\KeyValueSeed;
+use Tz7\WebScraper\Response\Seed;
 
 
 class NormalizerMiddleware implements Middleware
@@ -21,7 +22,22 @@ class NormalizerMiddleware implements Middleware
     {
         $next($command);
 
-        $command->setSeed($this->normalize($command->getSeed()));
+        $command->setSeed($this->getNormalizedSeed($command->getSeed()));
+    }
+
+    /**
+     * @param Seed|null $seed
+     *
+     * @return Seed|null
+     */
+    private function getNormalizedSeed(Seed $seed = null)
+    {
+        if ($seed instanceof ArraySeed)
+        {
+            return new ArraySeed($this->normalize($seed));
+        }
+
+        return $seed;
     }
 
     /**
@@ -31,24 +47,29 @@ class NormalizerMiddleware implements Middleware
      */
     private function normalize($data)
     {
-        if ($data instanceof ArraySeed)
+        switch (true)
         {
-            return $this->normalizerArray($data);
-        }
+            case $data instanceof ArraySeed:
+                return $this->normalizerArray($data);
 
-        return $data;
+            case $data instanceof Seed:
+                return $data->getData();
+
+            default:
+                return $data;
+        }
     }
 
     /**
      * @param ArraySeed $seed
      *
-     * @return ArraySeed
+     * @return array
      */
     private function normalizerArray(ArraySeed $seed)
     {
         $normalized = [];
 
-        foreach ($seed->getData()->getArrayCopy() as $item)
+        foreach ($seed->getData()->getArrayCopy() as $key => $item)
         {
             if ($item instanceof KeyValueSeed)
             {
@@ -56,12 +77,10 @@ class NormalizerMiddleware implements Middleware
             }
             else
             {
-                $normalized[] = $item;
+                $normalized[$key] = $this->normalize($item);
             }
         }
 
-        $seed->getData()->exchangeArray($normalized);
-
-        return $seed;
+        return $normalized;
     }
 }
