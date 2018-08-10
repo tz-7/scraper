@@ -6,7 +6,9 @@ namespace Tz7\WebScraper\Command\Handler;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Tz7\WebScraper\Command\Command;
+use Tz7\WebScraper\Response\ArraySeed;
 use Tz7\WebScraper\Response\ScalarSeed;
+use Tz7\WebScraper\Response\Seed;
 use UnexpectedValueException;
 
 
@@ -82,14 +84,12 @@ class EvaluateElement extends ElementSelectAbstract
             )
         );
 
-        $seed = new ScalarSeed(
-            $this->language->evaluate(
-                $expression,
-                $expressionContext->getArrayCopy()
-            )
+        $result = $this->language->evaluate(
+            $expression,
+            $expressionContext->getArrayCopy()
         );
 
-        return $command->setSeed($seed);
+        return $command->setSeed($this->getSeedForEvaluatedResult($result));
     }
 
     /**
@@ -107,5 +107,20 @@ class EvaluateElement extends ElementSelectAbstract
     public function getName()
     {
         return 'evaluate_element';
+    }
+
+    /**
+     * @param mixed $result
+     *
+     * @return Seed
+     */
+    private function getSeedForEvaluatedResult($result)
+    {
+        if (is_array($result))
+        {
+            return new ArraySeed($result);
+        }
+
+        return new ScalarSeed($result);
     }
 }

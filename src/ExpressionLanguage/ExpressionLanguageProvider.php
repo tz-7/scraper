@@ -15,6 +15,7 @@ class ExpressionLanguageProvider implements ExpressionFunctionProviderInterface
     public function getFunctions()
     {
         return [
+            ExpressionFunction::fromPhp('array_merge'),
             ExpressionFunction::fromPhp('preg_replace'),
             ExpressionFunction::fromPhp('strip_tags'),
             ExpressionFunction::fromPhp('trim'),
@@ -67,7 +68,42 @@ class ExpressionLanguageProvider implements ExpressionFunctionProviderInterface
                 {
                     return $this->absoluteUrl($driver, $uri);
                 }
-            )
+            ),
+            new ExpressionFunction(
+                'relativeUrl',
+                function ($uri)
+                {
+                    return sprintf('relativeUrl(%s)', $uri);
+                },
+                function (array $values, $uri)
+                {
+                    return $this->relativeUrl($uri);
+                }
+            ),
+            new ExpressionFunction(
+                'preg_match',
+                function ($pattern, $subject)
+                {
+                    return sprintf('preg_match(%s, %s)', $pattern, $subject);
+                },
+                function (array $values, $pattern, $subject)
+                {
+                    preg_match($pattern, $subject, $matches);
+
+                    return $matches;
+                }
+            ),
+            new ExpressionFunction(
+                'json_decode',
+                function ($json)
+                {
+                    return sprintf('json_decode(%s)', $json);
+                },
+                function (array $values, $json)
+                {
+                    return json_decode($json, true);
+                }
+            ),
         ];
     }
 
@@ -118,6 +154,24 @@ class ExpressionLanguageProvider implements ExpressionFunctionProviderInterface
         return (string) UriResolver::resolve(
             new Uri($driver->getCurrentURL()),
             new Uri($uri)
+        );
+    }
+
+    /**
+     * @param string $uri
+     *
+     * @return string
+     */
+    public function relativeUrl($uri)
+    {
+        $uri = new Uri($uri);
+
+        return Uri::composeComponents(
+            '',
+            '',
+            $uri->getPath(),
+            $uri->getQuery(),
+            $uri->getFragment()
         );
     }
 }
