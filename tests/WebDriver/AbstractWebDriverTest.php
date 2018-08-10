@@ -7,7 +7,8 @@ use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Cache\VoidCache;
 use PHPUnit\Framework\TestCase;
 use Tz7\WebScraper\Browser\PhantomJsRunner;
-use Tz7\WebScraper\Factory\BuzzBrowserFactory;
+use Tz7\WebScraper\Browser\Buzz\Factory\BrowserFactory;
+use Tz7\WebScraper\Browser\Buzz\Factory\ClientFactory;
 use Tz7\WebScraper\Factory\WebDriverFactory;
 use Tz7\WebScraper\Request\WebDriverConfiguration;
 use Tz7\WebScraper\Session\SessionManager;
@@ -97,7 +98,11 @@ abstract class AbstractWebDriverTest extends TestCase
     {
         if ($this->webDriverFactory === null)
         {
-            $this->webDriverFactory = new WebDriverFactory(new BuzzBrowserFactory());
+            $this->webDriverFactory = new WebDriverFactory(
+                new BrowserFactory(
+                    new ClientFactory()
+                )
+            );
         }
 
         return $this->webDriverFactory;

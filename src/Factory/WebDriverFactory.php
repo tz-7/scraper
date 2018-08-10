@@ -7,6 +7,7 @@ use Buzz\Util\CookieJar;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\WebDriverCapabilityType;
 use Facebook\WebDriver\WebDriverDimension;
+use Tz7\WebScraper\Browser\Buzz\Factory\BrowserFactory;
 use Tz7\WebScraper\Request\WebDriverConfiguration;
 use Tz7\WebScraper\WebDriver\FacebookWebDriver\FacebookWebDriverAdapter;
 use Tz7\WebScraper\WebDriver\FacebookWebDriver\FacebookWebElementSelectorFactory;
@@ -19,13 +20,13 @@ use Tz7\WebScraper\WebDriver\WebDriverAdapterInterface;
 
 class WebDriverFactory
 {
-    /** @var  BuzzBrowserFactory */
+    /** @var  BrowserFactory */
     private $buzzBrowserFactory;
 
     /**
-     * @param BuzzBrowserFactory $buzzBrowserFactory
+     * @param BrowserFactory $buzzBrowserFactory
      */
-    public function __construct(BuzzBrowserFactory $buzzBrowserFactory)
+    public function __construct(BrowserFactory $buzzBrowserFactory)
     {
         $this->buzzBrowserFactory = $buzzBrowserFactory;
     }
