@@ -8,6 +8,7 @@ use GuzzleHttp\Psr7\UriResolver;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 use Tz7\WebScraper\WebDriver\WebDriverAdapterInterface;
+use Tz7\WebScraper\WebDriver\WebElementAdapterInterface;
 
 
 class ExpressionLanguageProvider implements ExpressionFunctionProviderInterface
@@ -102,6 +103,19 @@ class ExpressionLanguageProvider implements ExpressionFunctionProviderInterface
                 function (array $values, $json)
                 {
                     return json_decode($json, true);
+                }
+            ),
+            new ExpressionFunction(
+                'find_element',
+                function (WebDriverAdapterInterface $driver, WebElementAdapterInterface $element, $selector)
+                {
+                    return sprintf('find_element(driver, element, %s)', $selector);
+                },
+                function (array $values, WebDriverAdapterInterface $driver, WebElementAdapterInterface $element, $selector)
+                {
+                    return $element->findElement(
+                        $driver->getSelectorFactory()->create($selector)
+                    );
                 }
             ),
         ];

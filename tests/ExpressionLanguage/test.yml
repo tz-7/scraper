@@ -1,4 +1,4 @@
 preg_match:
   Yaml_RSS:
-    expression: 'preg_match("/rss.php\\?key=(.*)/i", "rss.php?key=123456")'
-    expected: ['123456']
+    expression: 'preg_match("/rss.php\\?key=(?<key>.*)/i", "rss.php?key=123456")["key"]'
+    expected: '123456'

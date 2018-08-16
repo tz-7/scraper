@@ -18,8 +18,8 @@ class PregMatchExpressionTest extends AbstractExpressionTest
         return array_merge(
             [
                 'Match key in url' => [
-                    'expression' => 'preg_match("/some.php\\\?key=(\\\d+)/", "some.php?key=123456")',
-                    'expected'   => [123456]
+                    'expression' => 'preg_match("/some.php\\\?key=(?<key>\\\d+)/", "some.php?key=123456")["key"]',
+                    'expected'   => 123456
                 ]
             ],
             $yaml['preg_match']
