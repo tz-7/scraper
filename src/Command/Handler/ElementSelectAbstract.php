@@ -10,8 +10,7 @@ use Tz7\WebScraper\WebDriver\WebElementSelectAdapterInterface;
 
 abstract class ElementSelectAbstract extends Handler
 {
-    const SELECTOR      = 'selector';
-    const SELECTOR_TYPE = 'selector_type';
+    const SELECTOR = 'selector';
 
     /**
      * @param Command $command
@@ -30,18 +29,9 @@ abstract class ElementSelectAbstract extends Handler
      */
     protected function createSelector(Command $command)
     {
-        $selector     = $command->getConfigBy(self::SELECTOR);
-        $selectorType = $command->getConfigBy(self::SELECTOR_TYPE);
+        $selector = $command->getConfigBy(self::SELECTOR);
 
-        if ($selectorType === null)
-        {
-            $selectorType = $this->getSelectorType($selector);
-        }
-
-        return $command->getDriver()->getSelectorFactory()->createByType(
-            $selectorType,
-            $this->getCleanedSelector($selector)
-        );
+        return $command->getDriver()->getSelectorFactory()->create($selector);
     }
 
     /**
@@ -52,8 +42,7 @@ abstract class ElementSelectAbstract extends Handler
         return parent::getOptionsResolver()
             ->setDefaults(
                 [
-                    self::SELECTOR      => null,
-                    self::SELECTOR_TYPE => null
+                    self::SELECTOR => null
                 ]
             )
             ->setAllowedTypes(
@@ -61,26 +50,6 @@ abstract class ElementSelectAbstract extends Handler
                 [
                     'string',
                     'null'
-                ]
-            )
-            ->setAllowedTypes(
-                self::SELECTOR_TYPE,
-                [
-                    'string',
-                    'null'
-                ]
-            )
-            ->setAllowedValues(
-                self::SELECTOR_TYPE,
-                [
-                    WebElementSelectAdapterInterface::TYPE_CSS_SELECTOR,
-                    WebElementSelectAdapterInterface::TYPE_ID,
-                    WebElementSelectAdapterInterface::TYPE_NAME,
-                    WebElementSelectAdapterInterface::TYPE_LINK_TEXT,
-                    WebElementSelectAdapterInterface::TYPE_PARTIAL_LINK_TEXT,
-                    WebElementSelectAdapterInterface::TYPE_TAG_NAME,
-                    WebElementSelectAdapterInterface::TYPE_XPATH,
-                    null
                 ]
             );
     }

@@ -4,16 +4,16 @@ namespace Tz7\WebScraper\WebDriver\SymfonyCrawler;
 
 
 use InvalidArgumentException;
+use Tz7\WebScraper\WebDriver\AbstractWebElementSelectorFactory;
 use Tz7\WebScraper\WebDriver\WebElementSelectAdapterInterface;
-use Tz7\WebScraper\WebDriver\WebElementSelectorFactoryInterface;
 
 
-class CrawlerWebElementSelectorFactory implements WebElementSelectorFactoryInterface
+class CrawlerWebElementSelectorFactory extends AbstractWebElementSelectorFactory
 {
     /**
      * @inheritDoc
      */
-    public function createByType($type, $value)
+    protected function createByType($type, $value)
     {
         $allowedTypes = [
             WebElementSelectAdapterInterface::TYPE_XPATH,

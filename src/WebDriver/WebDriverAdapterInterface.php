@@ -45,7 +45,7 @@ interface WebDriverAdapterInterface extends WebElementSearchContextInterface
     /**
      * @TODO Sure?
      *
-     * @return WebElementSelectorFactoryInterface
+     * @return AbstractWebElementSelectorFactory
      */
     public function getSelectorFactory();
 

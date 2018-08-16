@@ -4,17 +4,17 @@ namespace Tz7\WebScraper\WebDriver\FacebookWebDriver;
 
 
 use Facebook\WebDriver\WebDriverBy;
+use Tz7\WebScraper\WebDriver\AbstractWebElementSelectorFactory;
 use Tz7\WebScraper\WebDriver\WebElementSelectAdapterInterface;
-use Tz7\WebScraper\WebDriver\WebElementSelectorFactoryInterface;
 use UnexpectedValueException;
 
 
-class FacebookWebElementSelectorFactory implements WebElementSelectorFactoryInterface
+class FacebookWebElementSelectorFactory extends AbstractWebElementSelectorFactory
 {
     /**
      * @inheritDoc
      */
-    public function createByType($type, $value)
+    protected function createByType($type, $value)
     {
         switch ($type)
         {

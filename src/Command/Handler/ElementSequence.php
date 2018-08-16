@@ -78,10 +78,7 @@ class ElementSequence extends Handler
         $selector  = $command
             ->getDriver()
             ->getSelectorFactory()
-            ->createByType(
-                $this->getSelectorType($rawSelect),
-                $this->getCleanedSelector($rawSelect)
-            );
+            ->create($rawSelect);
 
         $elements      = $element->findElements($selector);
         $foundElements = count($elements);

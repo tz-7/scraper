@@ -51,10 +51,7 @@ class FormSubmit extends Handler
         $submitSelector  = $command->getConfigBy(self::SUBMIT);
 
         $form = $element->findElement(
-            $selectorFactory->createByType(
-                $this->getSelectorType($formSelector, WebElementSelectAdapterInterface::TYPE_CSS_SELECTOR),
-                $this->getCleanedSelector($formSelector)
-            )
+            $selectorFactory->create($formSelector, WebElementSelectAdapterInterface::TYPE_CSS_SELECTOR)
         );
 
         if ($form === null)
@@ -63,10 +60,7 @@ class FormSubmit extends Handler
         }
 
         $submit = $form->findElement(
-            $selectorFactory->createByType(
-                $this->getSelectorType($submitSelector, WebElementSelectAdapterInterface::TYPE_CSS_SELECTOR),
-                $this->getCleanedSelector($submitSelector)
-            )
+            $selectorFactory->create($submitSelector, WebElementSelectAdapterInterface::TYPE_CSS_SELECTOR)
         );
 
         $options = $command->getConfig();

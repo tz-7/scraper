@@ -12,10 +12,10 @@ use Tz7\WebScraper\Command\Handler\Click;
 use Tz7\WebScraper\Request\Context;
 use Tz7\WebScraper\Request\ElementStack;
 use Tz7\WebScraper\Request\History;
+use Tz7\WebScraper\WebDriver\AbstractWebElementSelectorFactory;
 use Tz7\WebScraper\WebDriver\WebDriverAdapterInterface;
 use Tz7\WebScraper\WebDriver\WebElementAdapterInterface;
 use Tz7\WebScraper\WebDriver\WebElementSelectAdapterInterface;
-use Tz7\WebScraper\WebDriver\WebElementSelectorFactoryInterface;
 
 
 /**
@@ -75,15 +75,15 @@ class ClickTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        /** @var WebElementSelectorFactoryInterface|PHPUnit_Framework_MockObject_MockObject $selectorFactory */
+        /** @var AbstractWebElementSelectorFactory|PHPUnit_Framework_MockObject_MockObject $selectorFactory */
         $selectorFactory = $this
-            ->getMockBuilder(WebElementSelectorFactoryInterface::class)
+            ->getMockBuilder(AbstractWebElementSelectorFactory::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $selectorFactory
             ->expects($this->once())
-            ->method('createByType')
+            ->method('create')
             ->willReturn($selector);
 
         /** @var WebDriverAdapterInterface|PHPUnit_Framework_MockObject_MockObject $driver */

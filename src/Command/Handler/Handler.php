@@ -140,37 +140,6 @@ abstract class Handler
     }
 
     /**
-     * @param string $selector
-     * @param string $default
-     *
-     * @return string
-     */
-    protected function getSelectorType($selector, $default = WebElementSelectAdapterInterface::TYPE_CSS_SELECTOR)
-    {
-        if (($pos = strpos($selector, '::')) === false)
-        {
-            return $default;
-        }
-
-        return substr($selector, 0, $pos);
-    }
-
-    /**
-     * @param string $selector
-     *
-     * @return string
-     */
-    protected function getCleanedSelector($selector)
-    {
-        if (($pos = strpos($selector, '::')) === false)
-        {
-            return $selector;
-        }
-
-        return (string)substr($selector, $pos + 2);
-    }
-
-    /**
      * @return string
      */
     abstract public function getName();
