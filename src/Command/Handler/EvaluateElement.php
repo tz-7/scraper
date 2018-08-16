@@ -45,15 +45,6 @@ class EvaluateElement extends ElementSelectAbstract
         {
             $selector = $command->getConfigBy(self::SELECTOR);
 
-            $this->logger->debug(
-                sprintf(
-                    'Selecting "%s" under %s:"%s")',
-                    $selector,
-                    $element->getTagName(),
-                    $element->getText()
-                )
-            );
-
             $subElement = $element->findElement(
                 $this->createSelector($command)
             );

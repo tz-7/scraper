@@ -37,9 +37,12 @@ class ConditionalIfStatement extends Handler
      */
     protected function execute(Command $command)
     {
+        $expressionContext = clone $command->getExpressionContext();
+        $expressionContext->offsetSet('element',  $command->getElementStack()->top());
+
         $success = $this->language->evaluate(
             $command->getConfigBy(self::STATEMENT),
-            $command->getExpressionContext()->getArrayCopy()
+            $expressionContext->getArrayCopy()
         );
 
         $then = $command->getConfigBy(self::THEN);
@@ -53,8 +56,6 @@ class ConditionalIfStatement extends Handler
         {
             $command->setSeed(new CommandSeed($command->createChildByConfig($else)));
         }
-
-        $command->setSeed(null);
     }
 
     /**
