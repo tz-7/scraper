@@ -8,7 +8,7 @@ use Tz7\WebScraper\Request\WebDriverConfiguration;
 
 
 /**
- * @coversDefaultClass \Tz7\WebScraper\Session\SessionManager
+ * @coversDefaultClass \Tz7\WebScraper\WebDriver\WebDriverSessionManager
  */
 class RestoreSessionTest extends AbstractWebDriverTest
 {

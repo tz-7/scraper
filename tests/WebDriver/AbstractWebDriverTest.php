@@ -11,7 +11,7 @@ use Tz7\WebScraper\Browser\Buzz\Factory\BrowserFactory;
 use Tz7\WebScraper\Browser\Buzz\Factory\ClientFactory;
 use Tz7\WebScraper\Factory\WebDriverFactory;
 use Tz7\WebScraper\Request\WebDriverConfiguration;
-use Tz7\WebScraper\Session\SessionManager;
+use Tz7\WebScraper\WebDriver\WebDriverSessionManager;
 use Tz7\WebScraper\WebDriver\WebDriverAdapterInterface;
 
 
@@ -20,7 +20,7 @@ abstract class AbstractWebDriverTest extends TestCase
     /** @var WebDriverFactory */
     private $webDriverFactory;
 
-    /** @var SessionManager */
+    /** @var WebDriverSessionManager */
     private $sessionManager;
 
     /**
@@ -109,13 +109,13 @@ abstract class AbstractWebDriverTest extends TestCase
     }
 
     /**
-     * @return SessionManager
+     * @return WebDriverSessionManager
      */
     protected function getSessionManager()
     {
         if ($this->sessionManager === null)
         {
-            $this->sessionManager = new SessionManager($this->getWebDriverFactory(), $this->getCache());
+            $this->sessionManager = new WebDriverSessionManager($this->getWebDriverFactory(), $this->getCache());
         }
 
         return $this->sessionManager;

@@ -1,16 +1,15 @@
 <?php
 
-namespace Tz7\WebScraper\Session;
+namespace Tz7\WebScraper\WebDriver;
 
 
 use Doctrine\Common\Cache\Cache;
 use Facebook\WebDriver\Exception\WebDriverException;
 use Tz7\WebScraper\Factory\WebDriverFactory;
 use Tz7\WebScraper\Request\WebDriverConfiguration;
-use Tz7\WebScraper\WebDriver\WebDriverAdapterInterface;
 
 
-class SessionManager
+class WebDriverSessionManager
 {
     const DEFAULT_TTL = 86400;
 
