@@ -95,6 +95,19 @@ class ExpressionLanguageProvider implements ExpressionFunctionProviderInterface
                 }
             ),
             new ExpressionFunction(
+                'preg_match_all',
+                function ($pattern, $subject)
+                {
+                    return sprintf('preg_match(%s, %s)', $pattern, $subject);
+                },
+                function (array $values, $pattern, $subject)
+                {
+                    preg_match_all($pattern, $subject, $matches);
+
+                    return $matches[1];
+                }
+            ),
+            new ExpressionFunction(
                 'json_decode',
                 function ($json)
                 {
@@ -114,6 +127,19 @@ class ExpressionLanguageProvider implements ExpressionFunctionProviderInterface
                 function (array $values, WebDriverAdapterInterface $driver, WebElementAdapterInterface $element, $selector)
                 {
                     return $element->findElement(
+                        $driver->getSelectorFactory()->create($selector)
+                    );
+                }
+            ),
+            new ExpressionFunction(
+                'find_elements',
+                function (WebDriverAdapterInterface $driver, WebElementAdapterInterface $element, $selector)
+                {
+                    return sprintf('find_element(driver, element, %s)', $selector);
+                },
+                function (array $values, WebDriverAdapterInterface $driver, WebElementAdapterInterface $element, $selector)
+                {
+                    return $element->findElements(
                         $driver->getSelectorFactory()->create($selector)
                     );
                 }
