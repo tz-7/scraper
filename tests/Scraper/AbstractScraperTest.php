@@ -20,6 +20,7 @@ use Tz7\WebScraper\Command\Middleware\TreeWalkMiddleware;
 use Tz7\WebScraper\ExpressionLanguage\ExpressionLanguageProvider;
 use Tz7\WebScraper\Factory\HandlerCollectionFactory;
 use Tz7\WebScraper\Formatter\VerboseLineFormatter;
+use Tz7\WebScraper\Normalizer\SeedNormalizer;
 use Tz7\WebScraper\Resolver\AbstractConfigurationResolver;
 use Tz7\WebScraper\Resolver\EnvironmentConfigurationResolver;
 use Tz7\WebScraper\Scraper;
@@ -140,7 +141,7 @@ abstract class AbstractScraperTest extends AbstractWebDriverTest
             [
                 new ScreenshotMiddleware($logger),
                 new TreeWalkMiddleware(),
-                new NormalizerMiddleware(),
+                new NormalizerMiddleware(new SeedNormalizer()),
                 new PlantationMiddleware(),
                 new RedirectCheckMiddleware(),
                 new CommandHandlerMiddleware($this->buildHandlerLocator($logger))

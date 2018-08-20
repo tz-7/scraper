@@ -21,6 +21,7 @@ use Tz7\WebScraper\Command\Middleware\ScreenshotMiddleware;
 use Tz7\WebScraper\Command\Middleware\TreeWalkMiddleware;
 use Tz7\WebScraper\ExpressionLanguage\ExpressionLanguageProvider;
 use Tz7\WebScraper\Factory\HandlerCollectionFactory;
+use Tz7\WebScraper\Normalizer\SeedNormalizer;
 use Tz7\WebScraper\Request\Context;
 use Tz7\WebScraper\Request\ElementStack;
 use Tz7\WebScraper\Request\History;
@@ -169,7 +170,7 @@ class CommandBusTest extends CommandTestAbstract
             [
                 new ScreenshotMiddleware(new NullLogger()),
                 new TreeWalkMiddleware(),
-                new NormalizerMiddleware(),
+                new NormalizerMiddleware(new SeedNormalizer()),
                 new PlantationMiddleware(),
                 new RedirectCheckMiddleware(),
                 new CommandHandlerMiddleware($this->buildHandlerLocator())
