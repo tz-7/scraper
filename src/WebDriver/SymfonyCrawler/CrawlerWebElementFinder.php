@@ -5,6 +5,7 @@ namespace Tz7\WebScraper\WebDriver\SymfonyCrawler;
 
 use InvalidArgumentException;
 use Symfony\Component\DomCrawler\Crawler;
+use Tz7\WebScraper\Exception\ElementNotFoundException;
 use Tz7\WebScraper\WebDriver\WebElementSelectAdapterInterface;
 
 
@@ -15,6 +16,8 @@ class CrawlerWebElementFinder
      * @param CrawlerWebElementSelector $selector
      *
      * @return CrawlerWebElementAdapter|null
+     *
+     * @throws ElementNotFoundException
      */
     public function findElement(Crawler $crawler, CrawlerWebElementSelector $selector)
     {
@@ -22,7 +25,9 @@ class CrawlerWebElementFinder
 
         if (empty($found))
         {
-            return null;
+            throw new ElementNotFoundException(
+                sprintf('Element not found by "%s"', $selector)
+            );
         }
 
         return array_shift($found);

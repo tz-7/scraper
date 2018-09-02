@@ -9,7 +9,6 @@ use Tz7\WebScraper\Command\Command;
 use Tz7\WebScraper\Response\ArraySeed;
 use Tz7\WebScraper\Response\ScalarSeed;
 use Tz7\WebScraper\Response\Seed;
-use UnexpectedValueException;
 
 
 /**
@@ -43,24 +42,9 @@ class EvaluateElement extends ElementSelectAbstract
 
         if ($this->hasSelector($command))
         {
-            $selector = $command->getConfigBy(self::SELECTOR);
-
-            $subElement = $element->findElement(
+            $element = $element->findElement(
                 $this->createSelector($command)
             );
-
-            if ($subElement === null)
-            {
-                throw new UnexpectedValueException(
-                    sprintf(
-                        'Element not found under "%s" as "%s"',
-                        $element->getText(),
-                        $selector
-                    )
-                );
-            }
-
-            $element = $subElement;
         }
 
         $expressionContext = clone $command->getExpressionContext();
