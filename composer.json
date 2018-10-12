@@ -2,12 +2,14 @@
     "name":        "tz7/scraper",
     "license":     "MIT",
     "type":        "library",
-    "description": "Web Scraper Bot Fun",
-    "authors": {
-        "name": "Adam Torok",
-        "email": "adamus.tork@gmail.com",
-        "role": "Developer"
-    },
+    "description": "Web Scraper",
+    "authors": [
+        {
+            "name": "Adam Torok",
+            "email": "adamus.tork@gmail.com",
+            "role": "Developer"
+        }
+    ],
     "bin": ["bin/phantomjs-runner"],
     "autoload":    {
         "psr-4": {
