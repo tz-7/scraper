@@ -6,7 +6,6 @@ namespace Tz7\WebScraper\Command\Handler;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tz7\WebScraper\Command\Command;
-use Tz7\WebScraper\WebDriver\WebElementSelectAdapterInterface;
 
 
 abstract class Handler
