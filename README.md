@@ -260,4 +260,4 @@ $scraper->scrape(
 Gave up on Deferred/Promise based tree-walk on commands after a half year with full of headache, so the 
  [TreeGrowthMiddleware](src/Command/Middleware/TreeGrowthMiddleware.php) speaks for itself :D
  
-I use it currently to extract data from sites without RSS or API.
+I'm using it to submit search forms and extract data from sites, where there is no RSS or API.
