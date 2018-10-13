@@ -31,7 +31,7 @@ As a result of this,
 
 The examples below are in YAML.
 
-### Command Pattern
+### About Commands
 
 Commands are atomic level instructions for the Scraper. Each command does exactly one thing. 
 
@@ -168,6 +168,87 @@ See more [here](tests/Scraper).
 
 * CSS: default
 * XPATH: prefix with "xpath::" (double colon is important), eg: "xpath:://a[contains(@href, "download.php")]"
+
+## Installation
+
+1. composer.json
+
+        "repositories": [
+            {
+                "type": "vcs",
+                "url":  "git@github.com:tz-7/scraper.git"
+            }
+        ],
+        
+2. master under development
+
+        composer install tz7/scraper:dev-master@dev
+        
+3. Create a scraper instance and run a config
+
+```php
+<?php
+
+use League\Tactician\CommandBus;
+use League\Tactician\Handler\Locator\InMemoryLocator;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use Tz7\WebScraper\Command\Middleware\CommandHandlerMiddleware;
+use Tz7\WebScraper\Command\Middleware\NullElementMiddleware;
+use Tz7\WebScraper\Command\Middleware\RedirectCheckMiddleware;
+use Tz7\WebScraper\Command\Middleware\TreeGrowthMiddleware;
+use Tz7\WebScraper\ExpressionLanguage\ExpressionLanguageProvider;
+use Tz7\WebScraper\Factory\HandlerCollectionFactory;
+use Tz7\WebScraper\Normalizer\SeedNormalizer;
+use Tz7\WebScraper\Scraper;
+use Tz7\WebScraper\WebDriver\WebDriverAdapterInterface;
+
+/** @var LoggerInterface $logger */
+/** @var WebDriverAdapterInterface $webDriverAdapter */
+/** @var array $config */
+/** @var array $expressionContext */
+
+$expressionLanguageProvider = new ExpressionLanguageProvider();
+
+$collectionFactory = new HandlerCollectionFactory(
+    $logger,
+    new ExpressionLanguage(
+        null,
+        [
+            $expressionLanguageProvider
+        ]
+    )
+);
+
+$locator = new InMemoryLocator();
+
+foreach ($collectionFactory->getCommands() as $handler)
+{
+    $locator->addHandler($handler, $handler->getName());
+}
+
+$commandBus = new CommandBus(
+    [
+        new TreeGrowthMiddleware(new SeedNormalizer()),
+        new RedirectCheckMiddleware(),
+        new NullElementMiddleware(),
+        new CommandHandlerMiddleware($locator)
+    ]
+);
+
+$scraper = new Scraper(
+    $commandBus,
+    $webDriverAdapter,
+    $logger,
+    $expressionLanguageProvider
+);
+
+$scraper->scrape(
+    $config,
+    $expressionContext
+);
+```
+
 
 ## Future plans
 
