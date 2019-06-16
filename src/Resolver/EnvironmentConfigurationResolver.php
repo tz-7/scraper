@@ -3,6 +3,9 @@
 namespace Tz7\WebScraper\Resolver;
 
 
+use RuntimeException;
+
+
 class EnvironmentConfigurationResolver extends AbstractConfigurationResolver
 {
     /**
@@ -10,13 +13,19 @@ class EnvironmentConfigurationResolver extends AbstractConfigurationResolver
      */
     public function resolveValue($value)
     {
-        if (preg_match('/^%([^%]+)%$/', $value, $match))
+        if (!preg_match('/^%([^%]+)%$/', $value, $match))
         {
-            $name = strtoupper(preg_replace(['~\.~'], ['__'], $match[1]));
-
-            return getenv($name) ?: $value;
+            return $value;
         }
 
-        return $value;
+        $name     = strtoupper(preg_replace(['~\.~'], ['__'], $match[1]));
+        $resolved = getenv($name);
+
+        if ($resolved !== false)
+        {
+            return $resolved;
+        }
+
+        throw new RuntimeException('Undefined configuration key: ' . $value);
     }
 }

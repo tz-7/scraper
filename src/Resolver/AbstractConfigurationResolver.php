@@ -3,6 +3,9 @@
 namespace Tz7\WebScraper\Resolver;
 
 
+use RuntimeException;
+
+
 abstract class AbstractConfigurationResolver
 {
     /**
@@ -20,6 +23,8 @@ abstract class AbstractConfigurationResolver
      * @param string $name
      *
      * @return string
+     *
+     * @throws RuntimeException
      */
     abstract public function resolveValue($name);
 

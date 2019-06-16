@@ -36,4 +36,13 @@ class EnvironmentConfigurationResolverTest extends TestCase
 
         $this->assertEquals('Mars', $resolved['deep']['test']);
     }
+
+    /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage Undefined configuration key: %no.way%
+     */
+    public function testResolverThrowsExceptionOnMissing()
+    {
+        $this->resolver->resolveValue('%no.way%');
+    }
 }
