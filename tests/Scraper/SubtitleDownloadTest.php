@@ -24,7 +24,7 @@ class SubtitleDownloadTest extends AbstractScraperTest
                 'form'         => '.search_dev > form',
                 'submit'       => 'input#gomb',
                 'fields'       => [
-                    'search' => 'The Expanse 3x10',
+                    'search' => 'Stargate SG-1 10x09',
                     'nyelv'  => 'Magyar'
                 ],
                 'processed_by' => [
@@ -55,7 +55,7 @@ class SubtitleDownloadTest extends AbstractScraperTest
 
         foreach ($data as $name => $link)
         {
-            $this->assertContains('Holden', $scraper->download($link));
+            $this->assertContains('pajzsokat maximumra', $scraper->download($link));
         }
     }
 
