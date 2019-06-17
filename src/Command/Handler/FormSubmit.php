@@ -19,6 +19,7 @@ class FormSubmit extends Handler
     const FORM     = 'form';
     const FIELDS   = 'fields';
     const EVALUATE = 'evaluate';
+    const OPTIONAL = 'optional';
     const SUBMIT   = 'submit';
     const OFFSET_X = 'offset_x';
     const OFFSET_Y = 'offset_y';
@@ -102,6 +103,14 @@ class FormSubmit extends Handler
             }
         }
 
+        foreach ($options[self::OPTIONAL] as $key)
+        {
+            if (array_key_exists($key, $options[self::FIELDS]) && in_array($options[self::FIELDS][$key], ['', null], true))
+            {
+                unset($options[self::FIELDS][$key]);
+            }
+        }
+
         $command->setConfig($options);
     }
 
@@ -115,7 +124,8 @@ class FormSubmit extends Handler
                 [
                     self::SLEEP_AFTER => 1000,
                     self::FIELDS      => [],
-                    self::EVALUATE    => []
+                    self::EVALUATE    => [],
+                    self::OPTIONAL    => []
                 ]
             )
             ->setRequired(
@@ -125,7 +135,8 @@ class FormSubmit extends Handler
                 ]
             )
             ->setAllowedTypes(self::FIELDS, 'array')
-            ->setAllowedTypes(self::EVALUATE, 'array');
+            ->setAllowedTypes(self::EVALUATE, 'array')
+            ->setAllowedTypes(self::OPTIONAL, 'array');
     }
 
     /**

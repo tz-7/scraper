@@ -77,6 +77,8 @@ Search, login, etc forms can be submitted.
         {key-value pairs to fill}
     evaluate:
         {key-expression pairs to evaluate and fill}
+    optional:
+        {list keys which can be removed if value equals null or empty string}
             
 #### Read text
 
