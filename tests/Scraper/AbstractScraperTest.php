@@ -139,11 +139,11 @@ abstract class AbstractScraperTest extends AbstractWebDriverTest
     {
         return new CommandBus(
             [
-                new ScreenshotMiddleware($logger),
                 new TreeWalkMiddleware(),
+                new RedirectCheckMiddleware(),
                 new NormalizerMiddleware(new SeedNormalizer()),
                 new PlantationMiddleware(),
-                new RedirectCheckMiddleware(),
+                new ScreenshotMiddleware($logger),
                 new CommandHandlerMiddleware($this->buildHandlerLocator($logger))
             ]
         );

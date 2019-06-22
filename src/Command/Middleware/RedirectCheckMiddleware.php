@@ -56,6 +56,8 @@ class RedirectCheckMiddleware implements Middleware
 
             $command->setUrlContextPattern($urlPatternContext);
             $next($command);
+
+            $currentUrl = $command->getDriver()->getCurrentURL();
         }
     }
 }
