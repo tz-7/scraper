@@ -19,6 +19,7 @@ abstract class AbstractConfigurationResolver
 
         return $config;
     }
+
     /**
      * @param string $name
      *
