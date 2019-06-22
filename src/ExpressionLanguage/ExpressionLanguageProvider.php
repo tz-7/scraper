@@ -18,6 +18,7 @@ class ExpressionLanguageProvider implements ExpressionFunctionProviderInterface
         return [
             ExpressionFunction::fromPhp('array_merge'),
             ExpressionFunction::fromPhp('preg_replace'),
+            ExpressionFunction::fromPhp('preg_split'),
             ExpressionFunction::fromPhp('strip_tags'),
             ExpressionFunction::fromPhp('trim'),
             ExpressionFunction::fromPhp('mt_rand'),
