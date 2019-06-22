@@ -4,7 +4,6 @@ namespace Tz7\WebScraper\Test\Resolver;
 
 use PHPUnit\Framework\TestCase;
 use Tz7\WebScraper\Resolver\ArrayConfigurationResolver;
-use Tz7\WebScraper\Resolver\EnvironmentConfigurationResolver;
 
 class ArrayConfigurationResolverTest extends TestCase
 {

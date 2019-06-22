@@ -166,7 +166,7 @@ See more [here](tests/Scraper).
 
 #### Selector
 
-[Chat sheet](https://devhints.io/xpath)
+[Cheat sheet](https://devhints.io/xpath)
 
 * CSS: default
 * XPATH: prefix with "xpath::" (double colon is important), eg: "xpath:://a[contains(@href, "download.php")]"
