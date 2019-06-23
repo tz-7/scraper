@@ -102,8 +102,19 @@ class CrawlerWebDriverAdapter implements WebDriverAdapterInterface
         $formCrawler = $formAdapter->getElement();
         $method      = strtoupper($formCrawler->attr('method') ?: 'GET');
         $action      = $formCrawler->attr('action');
-        $form        = $formCrawler->form($fields, $method);
-        $content     = http_build_query($form->getValues());
+        $form        = $formCrawler->form();
+
+        $values = $form->getValues();
+
+        if ($fields !== null)
+        {
+            foreach ($fields as $field => $value)
+            {
+                $values[$field] = $value;
+            }
+        }
+
+        $content = http_build_query($values);
 
         if ($method === 'GET')
         {
