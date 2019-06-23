@@ -140,7 +140,7 @@ abstract class AbstractScraperTest extends AbstractWebDriverTest
         return new CommandBus(
             [
                 new TreeWalkMiddleware(),
-                new RedirectCheckMiddleware(),
+                new RedirectCheckMiddleware($logger),
                 new NormalizerMiddleware(new SeedNormalizer()),
                 new PlantationMiddleware(),
                 new ScreenshotMiddleware($logger),

@@ -5,6 +5,8 @@ namespace Tz7\WebScraper\WebDriver\SymfonyCrawler;
 
 use Buzz\Browser;
 use Buzz\Message\MessageInterface;
+use Buzz\Message\RequestInterface;
+use Buzz\Message\Response;
 use Buzz\Util\CookieJar;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
@@ -18,6 +20,8 @@ use UnexpectedValueException;
 
 class CrawlerWebDriverAdapter implements WebDriverAdapterInterface
 {
+    const MAX_REDIRECTION = 2;
+
     /** @var Browser */
     private $browser;
 
@@ -71,7 +75,8 @@ class CrawlerWebDriverAdapter implements WebDriverAdapterInterface
      */
     public function get($url)
     {
-        $response = $this->browser->get($url, $this->getHeaders($url));
+        $response = $this->browserCall($url, RequestInterface::METHOD_GET);
+
         $this->setUpCrawler($response, $url);
 
         return new CrawlerWebElementAdapter($this->crawler, $this->finder);
@@ -82,7 +87,7 @@ class CrawlerWebDriverAdapter implements WebDriverAdapterInterface
      */
     public function download($url)
     {
-        return $this->browser->get($url, $this->getHeaders($url))->getContent();
+        return $this->browserCall($url, RequestInterface::METHOD_GET)->getContent();
     }
 
     /**
@@ -111,7 +116,8 @@ class CrawlerWebDriverAdapter implements WebDriverAdapterInterface
         }
 
         $url      = $this->getAbsoluteUrl($action);
-        $response = $this->browser->post($url, $this->getHeaders($url), $content);
+        $response = $this->browserCall($url, RequestInterface::METHOD_POST, $content);
+
         $this->setUpCrawler($response, $url);
 
         return new CrawlerWebElementAdapter($this->crawler, $this->finder);
@@ -182,6 +188,33 @@ class CrawlerWebDriverAdapter implements WebDriverAdapterInterface
         }
 
         return (string) UriResolver::resolve($base, $uri);
+    }
+
+    /**
+     * @param string $url
+     * @param string $method
+     * @param string $content
+     * @param int    $redirect
+     *
+     * @return MessageInterface
+     */
+    private function browserCall(&$url, $method, $content = '', $redirect = self::MAX_REDIRECTION)
+    {
+        /** @var Response $response */
+        $response = $this->browser->call($url, $method, $this->getHeaders($url), $content);
+
+        $location = $response->getHeader('Location');
+        if ($location !== null && $redirect > 0)
+        {
+            $statusCode = (int)$response->getStatusCode();
+            $url = UriResolver::resolve(new Uri($url), new Uri($location));
+
+            $method = in_array($statusCode, [307, 308], true) ? $method : RequestInterface::METHOD_GET;
+
+            return $this->browserCall($url, $method, '', $redirect - 1);
+        }
+
+        return $response;
     }
 
     /**

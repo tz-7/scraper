@@ -6,8 +6,8 @@ namespace Tz7\WebScraper\Browser\Buzz\Factory;
 use Buzz\Browser;
 use Buzz\Listener\History\Journal;
 use Buzz\Listener\HistoryListener;
-use Buzz\Util\CookieJar;
-use Tz7\WebScraper\Browser\Buzz\Listener\RedirectedCookieListener;
+use Tz7\WebScraper\Browser\Buzz\Listener\CookieListener;
+use Tz7\WebScraper\Browser\Buzz\Util\CookieJar;
 
 
 class BrowserFactory
@@ -32,7 +32,7 @@ class BrowserFactory
     {
         $client          = $this->clientFactory->create();
         $browser         = new Browser($client);
-        $cookiesListener = new RedirectedCookieListener($browser, $cookieJar);
+        $cookiesListener = new CookieListener($cookieJar);
         $history         = new Journal();
 
         $client->setMaxRedirects(0);

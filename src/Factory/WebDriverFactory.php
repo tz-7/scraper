@@ -3,11 +3,11 @@
 namespace Tz7\WebScraper\Factory;
 
 
-use Buzz\Util\CookieJar;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\WebDriverCapabilityType;
 use Facebook\WebDriver\WebDriverDimension;
 use Tz7\WebScraper\Browser\Buzz\Factory\BrowserFactory;
+use Tz7\WebScraper\Browser\Buzz\Util\CookieJar;
 use Tz7\WebScraper\Request\WebDriverConfiguration;
 use Tz7\WebScraper\WebDriver\FacebookWebDriver\FacebookWebDriverAdapter;
 use Tz7\WebScraper\WebDriver\FacebookWebDriver\FacebookWebElementSelectorFactory;

@@ -112,6 +112,14 @@ class Command
     }
 
     /**
+     * @return bool
+     */
+    public function isDriverMatchingUrlContextPattern()
+    {
+        return $this->isMatchingUrlContextPattern($this->getDriver()->getCurrentURL());
+    }
+
+    /**
      * @return ArrayObject
      */
     public function getExpressionContext()

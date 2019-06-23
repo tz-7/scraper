@@ -93,4 +93,36 @@ class ScrapingTestingGroundTest extends AbstractScraperTest
 
         $this->assertContains('/css/main.css', $response->getData());
     }
+
+    /**
+     * @covers ::scrape()
+     * @dataProvider provideScrapers
+     *
+     * @param Scraper $scraper
+     */
+    public function testRedirectDetection(Scraper $scraper)
+    {
+        $config = [
+            'command'      => 'navigate',
+            'url'          => '"https://demo.moodle.net/user/files.php"',
+            'on_redirect'  => [
+                'on_redirect'  => [],
+                'command'      => 'form_submit',
+                'form'         => 'form[id="login"]',
+                'submit'       => 'button[id="loginbtn"]',
+                'fields'       => [
+                    'username' => 'manager',
+                    'password' => 'sandbox'
+                ]
+            ],
+            'processed_by' => [
+                'command'  => 'read_text',
+                'selector' => '.page-header-headings > h1'
+            ]
+        ];
+
+        $response = $scraper->scrape($config);
+
+        $this->assertEquals('Max Manager', $response->getData());
+    }
 }

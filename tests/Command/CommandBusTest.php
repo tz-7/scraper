@@ -172,7 +172,7 @@ class CommandBusTest extends CommandTestAbstract
                 new TreeWalkMiddleware(),
                 new NormalizerMiddleware(new SeedNormalizer()),
                 new PlantationMiddleware(),
-                new RedirectCheckMiddleware(),
+                new RedirectCheckMiddleware(new NullLogger()),
                 new CommandHandlerMiddleware($this->buildHandlerLocator())
             ]
         );
